@@ -50,14 +50,12 @@ KisCustomGradientDialog::KisCustomGradientDialog(KoSegmentGradient* gradient, QW
     setMainWidget(m_page);
 }
 
-KisGradientChooser::KisGradientChooser(QWidget *parent, const char *name)
+KisGradientChooser::KisGradientChooser(QWidget *parent, QSharedPointer<KoAbstractResourceServerAdapter> adapter, const char *name)
         : QFrame(parent)
 {
     setObjectName(name);
     m_lbName = new QLabel();
 
-    KoResourceServer<KoAbstractGradient> * rserver = KoResourceServerProvider::instance()->gradientServer(false);
-    QSharedPointer<KoAbstractResourceServerAdapter> adapter (new KoResourceServerAdapter<KoAbstractGradient>(rserver));
     m_itemChooser = new KoResourceItemChooser(adapter, this);
     m_itemChooser->showTaggingBar(true);
     m_itemChooser->setFixedSize(250, 250);

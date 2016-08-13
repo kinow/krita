@@ -23,6 +23,7 @@
 #include <QFrame>
 #include <kritaui_export.h>
 
+class KoAbstractResourceServerAdapter;
 class KoSegmentGradient;
 class KisViewManager;
 class QLabel;
@@ -52,7 +53,7 @@ class KRITAUI_EXPORT KisGradientChooser : public QFrame
     Q_OBJECT
 
 public:
-    KisGradientChooser(QWidget *parent = 0, const char *name = 0);
+    KisGradientChooser(QWidget *parent = 0, QSharedPointer<KoAbstractResourceServerAdapter> adapter = QSharedPointer<KoAbstractResourceServerAdapter>(), const char *name = 0);
     virtual ~KisGradientChooser();
 
     /// Gets the currently selected resource

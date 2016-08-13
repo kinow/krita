@@ -76,7 +76,10 @@ KisControlFrame::KisControlFrame(KisViewManager *view, QWidget *parent, const ch
     setObjectName(name);
     KisConfig cfg;
     m_font = QFontDatabase::systemFont(QFontDatabase::GeneralFont);
+}
 
+void KisControlFrame::setup(QWidget *parent)
+{
     m_patternWidget = new KisIconWidget(parent, "patterns");
     m_patternWidget->setToolTip(i18n("Fill Patterns"));
     m_patternWidget->setFixedSize(32, 32);
@@ -88,12 +91,9 @@ KisControlFrame::KisControlFrame(KisViewManager *view, QWidget *parent, const ch
     KoResourceServer<KoAbstractGradient> * rserver = KoResourceServerProvider::instance()->gradientServer(false);
     QSharedPointer<KoAbstractResourceServerAdapter> adapter (new KoResourceServerAdapter<KoAbstractGradient>(rserver));
     m_gradientWidget->setResourceAdapter(adapter);
-}
 
-void KisControlFrame::setup(QWidget *parent)
-{
     createPatternsChooser(m_viewManager);
-    createGradientsChooser(m_viewManager);
+    createGradientsChooser(m_viewManager, adapter);
 
     QWidgetAction *action  = new QWidgetAction(this);
     action->setText(i18n("&Patterns"));
@@ -189,7 +189,7 @@ void KisControlFrame::createPatternsChooser(KisViewManager * view)
 
 }
 
-void KisControlFrame::createGradientsChooser(KisViewManager * view)
+void KisControlFrame::createGradientsChooser(KisViewManager * view, QSharedPointer<KoAbstractResourceServerAdapter> adapter)
 {
     if (m_gradientChooserPopup) delete m_gradientChooserPopup;
     m_gradientChooserPopup = new QWidget(m_gradientWidget);
@@ -203,7 +203,7 @@ void KisControlFrame::createGradientsChooser(KisViewManager * view)
     m_gradientTab->setFont(m_font);
     l2->addWidget(m_gradientTab);
 
-    m_gradientChooser = new KisGradientChooser(m_gradientChooserPopup);
+    m_gradientChooser = new KisGradientChooser(m_gradientChooserPopup, adapter);
     m_gradientChooser->setFont(m_font);
     m_gradientTab->addTab(m_gradientChooser, i18n("Gradients"));
 

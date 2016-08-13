@@ -30,6 +30,7 @@
 class QWidget;
 class QTabWidget;
 
+class KoAbstractResourceServerAdapter;
 class KoAbstractGradient;
 class KisGradientChooser;
 class KisPatternChooser;
@@ -64,7 +65,7 @@ private Q_SLOTS:
 private:
 
     void createPatternsChooser(KisViewManager * view);
-    void createGradientsChooser(KisViewManager * view);
+    void createGradientsChooser(KisViewManager * view, QSharedPointer<KoAbstractResourceServerAdapter> adapter);
 
 private:
 
