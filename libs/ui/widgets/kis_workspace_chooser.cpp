@@ -24,6 +24,7 @@
 #include <QPainter>
 #include <QPushButton>
 #include <QAction>
+#include <QMessageBox>
 
 #include <klocalizedstring.h>
 
@@ -128,6 +129,13 @@ void KisWorkspaceChooser::slotSave()
         name = i18n("Workspace");
     }
     QFileInfo fileInfo(saveLocation + name + workspace->defaultFileExtension());
+    if (fileInfo.exists()) {
+        int ret = QMessageBox::warning(this, i18n("Warning"), i18n("There is another workspace with that name.\n"
+                                                   "Would you like to have two workspaces with the same name?"), QMessageBox::Yes | QMessageBox::No);
+        if (ret == QMessageBox::No) {
+            return;
+        }
+    }
 
     int i = 1;
     while (fileInfo.exists()) {
@@ -140,6 +148,9 @@ void KisWorkspaceChooser::slotSave()
     }
     workspace->setName(name);
     rserver->addResource(workspace);
+    QFrame *parent = dynamic_cast<QFrame*>(this->parent());
+    parent->setVisible(false);
+    m_nameEdit->setText("");
 }
 
 void KisWorkspaceChooser::resourceSelected(KoResource* resource)
